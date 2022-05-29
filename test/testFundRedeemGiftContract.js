@@ -19,26 +19,28 @@ describe("fund contract", function () {
 
 
     //Fund it
-    await giftContract.fund({ value: ethers.utils.parseEther("0.001") });
+    await expect(giftContract.fund({ value: ethers.utils.parseEther("0.001") })).to.emit(giftContract, "funded")
+
+
 
     console.log("funded with one ether, balance: ", await giftContract.getBalance());
 
     //only allowed address can transfer funds, after deployment it is only the owner
     await expect(giftContract.connect(accounts[1]).getGift()).to.be.reverted;
 
-    await giftContract.defineNewAccessCondition(accounts[2].address, false);
+    await expect(giftContract.defineNewAccessCondition(accounts[2].address, false)).to.emit(giftContract, "newAccessConditionDefined")
 
     await expect(giftContract.getGift()).to.be.reverted;
     await expect(giftContract.connect(accounts[1]).getGift()).to.be.reverted;
 
-    await giftContract.connect(accounts[2]).getGift();
+    await expect(giftContract.connect(accounts[2]).getGift()).to.emit(giftContract, "giftRedeemed");
 
     expect(await giftContract.getBalance()).to.be.equal(0);
 
     console.log("balance after withdrew: ", await giftContract.getBalance());
 
     //set new allowed address
-    await giftContract.defineNewAccessCondition(accounts[3].address, false);
+    await expect(giftContract.defineNewAccessCondition(accounts[3].address, false)).to.emit(giftContract, "newAccessConditionDefined")
 
     //fund it again, no other address will fund it
     await giftContract.connect(accounts[1]).fund({ value: ethers.utils.parseEther("0.002") });
