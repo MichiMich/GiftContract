@@ -18,7 +18,9 @@ contract GiftErc20Contract is Ownable {
         s_AllowedAddress = msg.sender; //first sets the address of the deployer to be allowed
     }
 
-    function fund() public payable {}
+    function fund(address _tokenContract, uint256 _amount) public payable {
+        //todo: check balance of msg.sender of this specific token, allow contract to recieve the tokens?, fund contract,
+    }
 
     function withdrawToken(address _tokenContract, uint256 _amount) external {
         require(_tokenContract != address(0), "invalid token contract");
@@ -34,7 +36,7 @@ contract GiftErc20Contract is Ownable {
             "invalid amount"
         );
         // transfer the token from address of this contract
-        // to address of the user (executing the withdrawToken() function)
+        // to address of the user who is executing the withdrawToken() function
         tokenContract.transfer(msg.sender, _amount);
     }
 
