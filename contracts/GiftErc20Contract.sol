@@ -22,7 +22,7 @@ contract GiftErc20Contract is Ownable {
         //todo: check balance of msg.sender of this specific token, allow contract to recieve the tokens?, fund contract,
     }
 
-    function withdrawToken(address _tokenContract, uint256 _amount) external {
+    function getGift(address _tokenContract, uint256 _amount) external {
         require(_tokenContract != address(0), "invalid token contract");
         require(
             _tokenContract != address(0) &&

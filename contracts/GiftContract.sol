@@ -14,7 +14,7 @@ contract GiftContract is Ownable {
 
     function fund() public payable {}
 
-    function withdraw() public {
+    function getGift() public {
         require(address(this).balance > 0, "contract balance=0");
         require(
             msg.sender == s_AllowedAddress || s_giftAllowedForAnyone,

@@ -24,14 +24,14 @@ describe("fund contract", function () {
     console.log("funded with one ether, balance: ", await giftContract.getBalance());
 
     //only allowed address can transfer funds, after deployment it is only the owner
-    await expect(giftContract.connect(accounts[1]).withdraw()).to.be.reverted;
+    await expect(giftContract.connect(accounts[1]).getGift()).to.be.reverted;
 
     await giftContract.defineNewAccessCondition(accounts[2].address, false);
 
-    await expect(giftContract.withdraw()).to.be.reverted;
-    await expect(giftContract.connect(accounts[1]).withdraw()).to.be.reverted;
+    await expect(giftContract.getGift()).to.be.reverted;
+    await expect(giftContract.connect(accounts[1]).getGift()).to.be.reverted;
 
-    await giftContract.connect(accounts[2]).withdraw();
+    await giftContract.connect(accounts[2]).getGift();
 
     expect(await giftContract.getBalance()).to.be.equal(0);
 
@@ -47,9 +47,9 @@ describe("fund contract", function () {
 
     expect(await giftContract.getBalance()).to.be.equal(ethers.utils.parseEther("0.002"));
 
-    await expect(giftContract.connect(accounts[2]).withdraw()).to.be.reverted;
+    await expect(giftContract.connect(accounts[2]).getGift()).to.be.reverted;
 
-    expect(await giftContract.connect(accounts[3]).withdraw());
+    expect(await giftContract.connect(accounts[3]).getGift());
 
     expect(await giftContract.getBalance()).to.be.equal(0);
 
@@ -68,7 +68,7 @@ describe("fund contract", function () {
     await giftContract.defineNewAccessCondition(ethers.constants.AddressZero, true); //anyone can redeem
 
     //only allowed address can transfer funds, after deployment it is only the owner
-    await giftContract.connect(accounts[1]).withdraw();
+    await giftContract.connect(accounts[1]).getGift();
 
     expect(await giftContract.getBalance()).to.be.equal(0);
 
@@ -79,13 +79,13 @@ describe("fund contract", function () {
 
     console.log("funded with one ether, balance: ", await giftContract.getBalance());
 
-    await expect(giftContract.connect(accounts[1]).withdraw()).to.be.reverted;
+    await expect(giftContract.connect(accounts[1]).getGift()).to.be.reverted;
 
     await giftContract.defineNewAccessCondition(accounts[2].address, false);
 
-    await expect(giftContract.connect(accounts[0]).withdraw()).to.be.reverted;
+    await expect(giftContract.connect(accounts[0]).getGift()).to.be.reverted;
 
-    await giftContract.connect(accounts[2]).withdraw();
+    await giftContract.connect(accounts[2]).getGift();
 
     expect(await giftContract.getBalance()).to.be.equal(0);
 
